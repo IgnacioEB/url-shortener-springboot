@@ -13,9 +13,11 @@ public class UrlRepository {
 
     private final ConexionBaseDeDatos conexion;
 
+
     public UrlRepository(ConexionBaseDeDatos conexion) {
         this.conexion = conexion;
     }
+
 
     public void guardar(String codigo, String url) {
 
@@ -74,5 +76,7 @@ public class UrlRepository {
             throw new RuntimeException("No se pudo comprobar el código", e);
         }
     }
+
+
 
 }
