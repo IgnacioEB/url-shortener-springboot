@@ -50,7 +50,7 @@ public class UrlService {
     }
 
     public String obtenerUrl(String codigo){
-        String url=urlRepository.buscar(codigo);
+        String url= urlRepository.buscar(codigo);
         if(url==null){
             throw new UrlNotFoundException("La URL no existe");
         }
