@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 class Urlshortener2ApplicationTests {
 
@@ -140,6 +141,23 @@ class Urlshortener2ApplicationTests {
 				.andExpect(jsonPath("$.error").value("Not Found"))
 				.andExpect(jsonPath("$.status").value(HttpStatus.NOT_FOUND.value()));
 
+
+	}
+
+
+	@Test
+	void deberiaRedireccionar() throws  Exception{
+		UrlService urlService = mock(UrlService.class);
+		when(urlService.obtenerUrl("abc123")).thenReturn("http://www.google.com");
+		UrlController urlController= new UrlController(urlService);
+		MockMvc mockMvc= MockMvcBuilders
+				.standaloneSetup(urlController)
+				.build();
+
+		mockMvc.perform(get("/abc123"))
+				.andDo(print())
+				.andExpect(status().isFound())
+				.andExpect(redirectedUrl("http://www.google.com"));
 
 	}
 
