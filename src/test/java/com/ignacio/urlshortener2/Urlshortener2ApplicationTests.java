@@ -1,18 +1,14 @@
 package com.ignacio.urlshortener2;
 
-import com.ignacio.urlshortener2.Service.UrlService;
+import com.ignacio.urlshortener2.service.UrlService;
 import com.ignacio.urlshortener2.controller.UrlController;
 import com.ignacio.urlshortener2.exception.UrlExceptionHandler;
 import com.ignacio.urlshortener2.exception.UrlNotFoundException;
 import com.ignacio.urlshortener2.repository.UrlRepository;
-import org.assertj.core.internal.Urls;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;

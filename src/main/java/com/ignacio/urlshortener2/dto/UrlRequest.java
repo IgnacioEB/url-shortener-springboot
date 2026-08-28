@@ -1,4 +1,4 @@
-package com.ignacio.urlshortener2.DataTransferObject;
+package com.ignacio.urlshortener2.dto;
 
 public class UrlRequest {
     public String url;

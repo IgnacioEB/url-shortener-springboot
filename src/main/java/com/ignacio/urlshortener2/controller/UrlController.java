@@ -1,7 +1,7 @@
 package com.ignacio.urlshortener2.controller;
-import com.ignacio.urlshortener2.DataTransferObject.UrlRequest;
-import com.ignacio.urlshortener2.DataTransferObject.UrlResponse;
-import com.ignacio.urlshortener2.Service.UrlService;
+import com.ignacio.urlshortener2.dto.UrlRequest;
+import com.ignacio.urlshortener2.dto.UrlResponse;
+import com.ignacio.urlshortener2.service.UrlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

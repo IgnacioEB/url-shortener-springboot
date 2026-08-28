@@ -1,7 +1,6 @@
-package com.ignacio.urlshortener2.Service;
+package com.ignacio.urlshortener2.service;
 
 import com.ignacio.urlshortener2.exception.UrlNotFoundException;
-import com.ignacio.urlshortener2.model.Url;
 import com.ignacio.urlshortener2.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
