@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 public class Url {
     private String urlOriginal;
     private String codigo;
-    private LocalDateTime fecha_creacion;
+    private LocalDateTime fechaCreacion;
 
-    public Url(String urlOriginal, String codigo, LocalDateTime fecha_creacion){
+    public Url(String urlOriginal, String codigo, LocalDateTime fechaCreacion){
         this.urlOriginal=urlOriginal;
         this.codigo=codigo;
-        this.fecha_creacion= fecha_creacion;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public String getUrlOriginal() {
@@ -21,7 +21,7 @@ public class Url {
         return codigo;
     }
 
-    public LocalDateTime getFecha_creacion() {
-        return fecha_creacion;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 }
