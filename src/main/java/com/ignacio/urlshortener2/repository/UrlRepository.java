@@ -1,6 +1,7 @@
 package com.ignacio.urlshortener2.repository;
 
 import com.ignacio.urlshortener2.database.ConexionBaseDeDatos;
+import com.ignacio.urlshortener2.model.Url;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -36,9 +37,8 @@ public class UrlRepository {
         }
     }
 
-    public String buscar(String codigo) {
-
-        String sql = "SELECT url,fecha_creacion FROM urls WHERE codigo = ?";
+    public Url buscar(String codigo) {
+        String sql = "SELECT url, fecha_creacion FROM urls WHERE codigo = ?";
 
         try (Connection connection = conexion.obtenerConexion();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -46,11 +46,13 @@ public class UrlRepository {
             statement.setString(1, codigo);
 
             try (ResultSet resultado = statement.executeQuery()) {
-
                 if (resultado.next()) {
-                    return resultado.getString("url");
+                    return new Url(
+                            resultado.getString("url"),
+                            codigo,
+                            resultado.getTimestamp("fecha_creacion").toLocalDateTime()
+                    );
                 }
-
                 return null;
             }
 

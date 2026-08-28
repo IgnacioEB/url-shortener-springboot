@@ -1,6 +1,7 @@
 package com.ignacio.urlshortener2.service;
 
 import com.ignacio.urlshortener2.exception.UrlNotFoundException;
+import com.ignacio.urlshortener2.model.Url;
 import com.ignacio.urlshortener2.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,6 @@ public class UrlService {
         this.urlRepository= urlRepository;
     }
 
-
-    public String saludar(){
-        return "Hola desde Spring boot";
-    }
 
     public String acortarUrl(String url){
         if(url==null || url.isBlank()){
@@ -48,8 +45,8 @@ public class UrlService {
         return codigo;
     }
 
-    public String obtenerUrl(String codigo){
-        String url= urlRepository.buscar(codigo);
+    public Url obtenerUrl(String codigo){
+        Url url= urlRepository.buscar(codigo);
         if(url==null){
             throw new UrlNotFoundException("La URL no existe");
         }

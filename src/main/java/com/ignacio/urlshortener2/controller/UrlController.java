@@ -1,6 +1,7 @@
 package com.ignacio.urlshortener2.controller;
 import com.ignacio.urlshortener2.dto.UrlRequest;
 import com.ignacio.urlshortener2.dto.UrlResponse;
+import com.ignacio.urlshortener2.model.Url;
 import com.ignacio.urlshortener2.service.UrlService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,6 @@ public class UrlController {
         this.urlService = urlService;
     }
 
-    @GetMapping("/hola")
-    public String hola() {
-        return urlService.saludar();
-    }
-
-
     @PostMapping("/acortar")
     public ResponseEntity<UrlResponse> acortar(@RequestBody UrlRequest request){
 
@@ -31,8 +26,8 @@ public class UrlController {
 
     @GetMapping("/{codigo}")
     public RedirectView redirigir(@PathVariable String codigo){
-        String url = urlService.obtenerUrl(codigo);
-        return new RedirectView(url);
+        Url url = urlService.obtenerUrl(codigo);
+        return new RedirectView(url.getUrlOriginal());
     }
 
 

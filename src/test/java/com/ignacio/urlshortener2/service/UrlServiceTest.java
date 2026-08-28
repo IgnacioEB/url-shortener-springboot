@@ -1,13 +1,14 @@
 package com.ignacio.urlshortener2.service;
 
 import com.ignacio.urlshortener2.exception.UrlNotFoundException;
+import com.ignacio.urlshortener2.model.Url;
 import com.ignacio.urlshortener2.repository.UrlRepository;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class UrlServiceTest {
     @Test
@@ -66,5 +67,19 @@ public class UrlServiceTest {
                 IllegalArgumentException.class,
                 () -> service.acortarUrl("http://esto es una url invalida")
         );
+    }
+
+    @Test
+    void deberiaObtenerUrlExistente() {
+        UrlRepository repository = mock(UrlRepository.class);
+        UrlService service = new UrlService(repository);
+
+        when(repository.buscar("abc123"))
+                .thenReturn(new Url("http://www.google.com", "abc123", LocalDateTime.now()));
+
+        Url resultado = service.obtenerUrl("abc123");
+
+        assertEquals("http://www.google.com", resultado.getUrlOriginal());
+        assertEquals("abc123", resultado.getCodigo());
     }
 }

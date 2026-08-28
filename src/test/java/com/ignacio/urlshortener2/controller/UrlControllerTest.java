@@ -2,6 +2,7 @@ package com.ignacio.urlshortener2.controller;
 
 import com.ignacio.urlshortener2.exception.UrlExceptionHandler;
 import com.ignacio.urlshortener2.exception.UrlNotFoundException;
+import com.ignacio.urlshortener2.model.Url;
 import com.ignacio.urlshortener2.service.UrlService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -9,12 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 public class UrlControllerTest {
     @Test
@@ -82,7 +87,7 @@ public class UrlControllerTest {
     @Test
     void deberiaRedireccionar() throws  Exception{
         UrlService urlService = mock(UrlService.class);
-        when(urlService.obtenerUrl("abc123")).thenReturn("http://www.google.com");
+        when(urlService.obtenerUrl("abc123")).thenReturn(new Url("http://www.google.com", "abc123", LocalDateTime.now()));
         UrlController urlController= new UrlController(urlService);
         MockMvc mockMvc= MockMvcBuilders
                 .standaloneSetup(urlController)

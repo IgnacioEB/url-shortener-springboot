@@ -1,8 +1,8 @@
 package com.ignacio.urlshortener2.dto;
 
 public class UrlRequest {
-    public String url;
-    public UrlRequest(){
+    private String url;
+    private UrlRequest(){
 
     }
     public String getUrl(){
