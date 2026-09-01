@@ -97,11 +97,6 @@ curl -i http://localhost:8080/noexiste
 ```
 
 ## Tests
-
-```bash
-mvn test
-```
-
 Tests de `UrlService` (validaciones, generación de código) y `UrlController` (respuestas HTTP, manejo de errores).
 
 ## Estructura
