@@ -1,53 +1,237 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Acortador de URLs</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 500px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      width: 100%;
-      margin-top: 10px;
-      box-sizing: border-box;
-    }
-    button {
-      cursor: pointer;
-    }
-    #resultado {
-      margin-top: 20px;
-      word-break: break-all;
-    }
-    #resultado a {
-      font-weight: bold;
-    }
-    .error {
-      color: red;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acortador de URLs</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #eef0f4;
+    --surface: #ffffff;
+    --ink: #1b1f2a;
+    --ink-soft: #5b6270;
+    --line: #d7dae2;
+    --accent: #3454d1;
+    --accent-soft: #e8ecfb;
+    --error: #b3261e;
+    --error-soft: #fbebea;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .kicker {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+
+  h1 {
+    font-size: 30px;
+    line-height: 1.15;
+    margin: 0 0 28px;
+    letter-spacing: -0.01em;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 7px;
+    background: var(--ink);
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  button:hover { background: var(--accent); }
+  button:active { transform: translateY(1px); }
+  button:disabled { background: var(--line); cursor: default; }
+
+  .output {
+    margin-top: 18px;
+    min-height: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+
+  .output.show { max-height: 140px; }
+
+  .result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--accent-soft);
+    border: 1px solid #c7d1f5;
+    border-radius: 7px;
+    padding: 14px 14px;
+    animation: reveal 0.35s ease;
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .copy-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid #c7d1f5;
+    padding: 6px 12px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .copy-btn:hover { background: white; }
+
+  .error-box {
+    background: var(--error-soft);
+    border: 1px solid #f0c4c1;
+    color: var(--error);
+    border-radius: 7px;
+    padding: 12px 14px;
+    font-size: 14px;
+    animation: reveal 0.25s ease;
+  }
+
+  .hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .hint code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+</style>
 </head>
 <body>
-  <h1>Acortador de URLs</h1>
-  <form id="form">
-    <input type="url" id="urlInput" placeholder="https://ejemplo.com/pagina-larga" required>
-    <button type="submit">Acortar</button>
-  </form>
-  <div id="resultado"></div>
+  <div class="page">
+    <p class="kicker">Internal tool</p>
+    <h1>Turn a long URL into something cooler.</h1>
+
+    <div class="panel">
+      <form id="form">
+        <label for="urlInput">URL to shorten</label>
+        <div class="row">
+          <input type="text" id="urlInput" placeholder="https://example.com/long-page" required autocomplete="off">
+          <button type="submit" id="submitBtn">Shorten</button>
+        </div>
+      </form>
+
+      <div class="output" id="output"></div>
+
+      <p class="hint">The codes are 6 characters long and do not expire..</p>
+    </div>
+  </div>
 
   <script>
     const form = document.getElementById('form');
-    const resultadoDiv = document.getElementById('resultado');
+    const input = document.getElementById('urlInput');
+    const btn = document.getElementById('submitBtn');
+    const output = document.getElementById('output');
+
+    function showResult(shortUrl) {
+      const link = `${window.location.origin}/${shortUrl}`;
+      output.innerHTML = `
+        <div class="result">
+          <a class="result-link" href="${link}" target="_blank">${link}</a>
+          <button type="button" class="copy-btn" id="copyBtn">Copiar</button>
+        </div>`;
+      output.classList.add('show');
+      document.getElementById('copyBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText(link);
+        const c = document.getElementById('copyBtn');
+        c.textContent = 'Copiado';
+        setTimeout(() => { c.textContent = 'Copiar'; }, 1500);
+      });
+    }
+
+    function showError(message) {
+      output.innerHTML = `<div class="error-box">${message}</div>`;
+      output.classList.add('show');
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const url = document.getElementById('urlInput').value;
-      resultadoDiv.textContent = 'Acortando...';
+      const url = input.value.trim();
+      btn.disabled = true;
+      btn.textContent = 'Acortando…';
 
       try {
         const res = await fetch('/acortar', {
@@ -55,18 +239,18 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url })
         });
-
         const data = await res.json();
 
         if (!res.ok) {
-          resultadoDiv.innerHTML = `<span class="error">${data.message}</span>`;
-          return;
+          showError(data.message || 'No se pudo acortar la URL.');
+        } else {
+          showResult(data.shortUrl);
         }
-
-        const shortLink = `${window.location.origin}/${data.shortUrl}`;
-        resultadoDiv.innerHTML = `Tu link corto: <a href="${shortLink}" target="_blank">${shortLink}</a>`;
       } catch (err) {
-        resultadoDiv.innerHTML = `<span class="error">Error de conexión</span>`;
+        showError('No se pudo conectar con el servidor.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Acortar';
       }
     });
   </script>
