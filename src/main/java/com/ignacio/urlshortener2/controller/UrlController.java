@@ -24,7 +24,7 @@ public class UrlController {
         return ResponseEntity .status(HttpStatus.CREATED) .body(new UrlResponse(codigo, request.getUrl()));
     }
 
-    @GetMapping("/{codigo}")
+    @GetMapping("/{codigo:[a-zA-Z0-9]+}")
     public RedirectView redirigir(@PathVariable String codigo){
         Url url = urlService.obtenerUrl(codigo);
         return new RedirectView(url.getUrlOriginal());
