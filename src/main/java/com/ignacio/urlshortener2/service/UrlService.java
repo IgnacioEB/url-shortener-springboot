@@ -17,14 +17,15 @@ public class UrlService {
         this.urlRepository= urlRepository;
     }
 
-
+    //ingresamos una URL y nos devuelve un código asociado
     public String acortarUrl(String url){
         if(url==null || url.isBlank()){
             throw new IllegalArgumentException("URL cannot be empty");
         }
 
         try{
-            URI uri= new URI(url);
+            URI uri= new URI(url);//URI es una cadena que identifica un recurso de manera unica dentro de un sistema.
+            //En este caso estamos convirtiendo nuestra URL a una URI asi podemos descomponerla y analizar sus partes
             if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme())) {
                 throw new IllegalArgumentException("URL must use http or https");
             }
@@ -36,7 +37,8 @@ public class UrlService {
         urlRepository.guardar(codigo, url);
         return codigo;
     }
-
+    //Usamos la clase java.util.UUID para generar un coódigo casi irrepetible
+    //Universally Unique Identifier
     private String generarCodigo(){
         String codigo;
         do{

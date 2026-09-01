@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 //La notación indica a Spring "esta clase se va a encargar de manejar excepciones que ocurran dentro de mis controllers"
 public class UrlExceptionHandler {
-    @ExceptionHandler(UrlNotFoundException.class)
+    @ExceptionHandler(UrlNotFoundException.class)//La anotación @ExceptionHandler le dice a SpringBoot que cuando ocurra ese tipo de excepcion, ejecute el siguiente metodo
     public ResponseEntity<ErrorResponse> manejarUrlNoEncontrada(UrlNotFoundException e){
         return ResponseEntity .status(HttpStatus.NOT_FOUND) .body(new ErrorResponse(e.getMessage(),HttpStatus.NOT_FOUND.value(),"Not Found"));
 

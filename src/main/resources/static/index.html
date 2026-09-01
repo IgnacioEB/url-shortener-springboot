@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Acortador de URLs</title>
+<title>URL Shortener</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -196,7 +196,7 @@
 
       <div class="output" id="output"></div>
 
-      <p class="hint">The codes are 6 characters long and do not expire..</p>
+      <p class="hint">The codes are 6 characters long and do not expire.</p>
     </div>
   </div>
 
@@ -211,14 +211,14 @@
       output.innerHTML = `
         <div class="result">
           <a class="result-link" href="${link}" target="_blank">${link}</a>
-          <button type="button" class="copy-btn" id="copyBtn">Copiar</button>
+          <button type="button" class="copy-btn" id="copyBtn">Copy</button>
         </div>`;
       output.classList.add('show');
       document.getElementById('copyBtn').addEventListener('click', () => {
         navigator.clipboard.writeText(link);
         const c = document.getElementById('copyBtn');
-        c.textContent = 'Copiado';
-        setTimeout(() => { c.textContent = 'Copiar'; }, 1500);
+        c.textContent = 'Copied';
+        setTimeout(() => { c.textContent = 'Copy'; }, 1500);
       });
     }
 
@@ -231,7 +231,7 @@
       e.preventDefault();
       const url = input.value.trim();
       btn.disabled = true;
-      btn.textContent = 'Acortando…';
+      btn.textContent = 'Shortening…';
 
       try {
         const res = await fetch('/acortar', {
@@ -242,15 +242,15 @@
         const data = await res.json();
 
         if (!res.ok) {
-          showError(data.message || 'No se pudo acortar la URL.');
+          showError(data.message || 'URL could not be shortened.');
         } else {
           showResult(data.shortUrl);
         }
       } catch (err) {
-        showError('No se pudo conectar con el servidor.');
+        showError('Could not connect to the server.');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Acortar';
+        btn.textContent = 'Shorten';
       }
     });
   </script>
