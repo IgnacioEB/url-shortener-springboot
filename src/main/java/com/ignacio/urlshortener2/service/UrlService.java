@@ -20,17 +20,17 @@ public class UrlService {
 
     public String acortarUrl(String url){
         if(url==null || url.isBlank()){
-            throw new IllegalArgumentException("La URL no puede estar vacia");
+            throw new IllegalArgumentException("URL cannot be empty");
         }
 
         try{
             URI uri= new URI(url);
             if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme())) {
-                throw new IllegalArgumentException("La URL debe usar http o https");
+                throw new IllegalArgumentException("URL must use http or https");
             }
 
         }catch (URISyntaxException e){
-            throw new IllegalArgumentException("La URL no es valida");
+            throw new IllegalArgumentException("The URL is not valid");
         }
         String codigo= generarCodigo();
         urlRepository.guardar(codigo, url);
@@ -48,7 +48,7 @@ public class UrlService {
     public Url obtenerUrl(String codigo){
         Url url= urlRepository.buscar(codigo);
         if(url==null){
-            throw new UrlNotFoundException("La URL no existe");
+            throw new UrlNotFoundException("URL doesn't exist");
         }
         return url;
     }
