@@ -79,14 +79,6 @@ curl -X POST http://localhost:8080/acortar \
 {"message":"La URL no es valida","status":400,"error":"Bad Request"}
 ```
 
-Redirigir con un código existente (302):
-```bash
-curl -i http://localhost:8080/a1b2c3
-```
-```
-HTTP/1.1 302
-Location: https://www.google.com
-```
 
 Código que no existe (404):
 ```bash
